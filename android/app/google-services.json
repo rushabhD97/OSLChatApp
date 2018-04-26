@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "597094489732",
+    "firebase_url": "https://oslchitchat.firebaseio.com",
+    "project_id": "oslchitchat",
+    "storage_bucket": "oslchitchat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:597094489732:android:b7d3cd03dfbcbd89",
+        "android_client_info": {
+          "package_name": "com.example.oslchatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "597094489732-dpjik1pqtqlm3ju22l5do5o043q5k80c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_MZtuyCNqjZK5S_ZG0m1K5zbwEVt2yKw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
