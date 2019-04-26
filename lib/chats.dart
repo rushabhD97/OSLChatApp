@@ -22,8 +22,10 @@ class _ChatPageState extends State<ChatPage> {
     DatabaseReference userChatRef=FirebaseDatabase.instance.reference().child("chats/$parentUserId");
     userChatRef.keepSynced(true);
     var chatView =  new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Flexible(
+                    
                     child: new FirebaseAnimatedList(
                       query: userChatRef.child(childUserUid),
                       reverse: true,
@@ -140,9 +142,12 @@ class ChatMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      margin: const EdgeInsets.all(8.0),
+//      padding: EdgeInsets.all(4.0),
+//      margin: const EdgeInsets.all(8.0),
       child: new Row(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: !sender?MainAxisAlignment.start:MainAxisAlignment.end,
+                
         children:<Widget>[
           new Container(
             margin: const EdgeInsets.only(right:8.0),
@@ -151,7 +156,6 @@ class ChatMessage extends StatelessWidget {
             )
           ),
           new Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               new Text(name,style: Theme.of(context).textTheme.body2,),

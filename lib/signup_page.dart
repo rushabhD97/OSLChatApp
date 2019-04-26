@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'main.dart';
 import 'home_page.dart';
-import 'dart:async';
 
 class Signup extends StatefulWidget{
   @override
@@ -126,8 +125,11 @@ class SignupState extends State<Signup> with SingleTickerProviderStateMixin{
           UserUpdateInfo userUpdateInfo=new UserUpdateInfo();
           userUpdateInfo.displayName=_usernameController.text.trim();
           FirebaseDatabase.instance.reference().child("users").child(onValue.uid).set(_usernameController.text.trim()).then((onValue){
-          auth.updateProfile(userUpdateInfo).then((onValue){
-            Navigator.pushReplacement(context, new MaterialPageRoute(builder: (context)=>new HomePage()));
+          auth.currentUser().then((user){
+            user.updateProfile(userUpdateInfo).then((onValue){
+              Navigator.pushReplacement(context, new MaterialPageRoute(builder: (context)=>new HomePage()));
+            });
+
           });
 
           });

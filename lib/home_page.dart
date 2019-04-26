@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'chats.dart';
 import 'main.dart';
 import 'account.dart';
@@ -17,10 +18,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) {
+        print('on message $message');
+      },
+      onResume: (Map<String, dynamic> message) {
+        print('on resume $message');
+      },
+      onLaunch: (Map<String, dynamic> message) {
+        print('on launch $message');
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.getToken().then((token) {
+      print('Token Is' + token);
+    });
   }
 
   @override
@@ -31,8 +48,16 @@ class _HomePageState extends State<HomePage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             user = snapshot.data;
-          chatsRef=FirebaseDatabase.instance.reference().child("chats/" + user.uid);
-          chatsRef.keepSynced(true);
+            _firebaseMessaging.getToken().then((token) {
+              FirebaseDatabase.instance
+                  .reference()
+                  .child("tokens/" + user.uid)
+                  .set(token);
+            });
+            chatsRef = FirebaseDatabase.instance
+                .reference()
+                .child("chats/" + user.uid);
+            chatsRef.keepSynced(true);
             if (user == null)
               Navigator.pushReplacement(context,
                   new MaterialPageRoute(builder: (context) => new LoginPage()));
@@ -41,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                 length: 2,
                 child: new Scaffold(
                     appBar: new AppBar(
-                      title: new Text("TigdiKaChat"),
+                      title: new Text("Realtime Chat App"),
                       actions: <Widget>[
                         new IconButton(
                             tooltip: "Log Out",
@@ -57,10 +82,11 @@ class _HomePageState extends State<HomePage> {
                         new IconButton(
                           tooltip: "${user.displayName}",
                           icon: new Icon(Icons.account_circle),
-                          onPressed: (){
-                            Navigator.push(context,new MaterialPageRoute(
-                              builder: (context)=>new AccountPage()
-                            ));
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => new AccountPage()));
                           },
                         )
                       ],
@@ -97,7 +123,7 @@ class _HomePageState extends State<HomePage> {
       length: 2,
       child: new Scaffold(
           appBar: new AppBar(
-            title: new Text("TigdiKaChat"),
+            title: new Text("Realtime Chat App"),
             actions: <Widget>[
               new IconButton(
                   tooltip: "Log Out",

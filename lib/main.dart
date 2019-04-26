@@ -3,8 +3,10 @@ import 'signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'home_page.dart';
 import 'package:flutter/services.dart';
-void main()=>runApp(new TigdiKaApp());
 
+void main(){
+  runApp(new TigdiKaApp());
+}
 FirebaseUser user;
 
 class TigdiKaApp extends StatelessWidget{
